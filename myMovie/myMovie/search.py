@@ -17,6 +17,7 @@ def search_form(request):
  
 # 接收请求数据
 
+
 userID = 'cevia'
 
 def search(request):  
@@ -25,34 +26,15 @@ def search(request):
     	userID = request.GET['userId']
     	message = 'the userId: ' + request.GET['userId']
 
-    	context          = {}
-    	context['recomdMoive'] = getTopN(movielist,ratedMovieList)
+    	context = {}
+    	context['recomdMoive'] = prepareJob(userID)
+    	context['userId'] = request.GET['userId']
     	return render(request, 'search_form.html', context)
         #context['recomdMoive'] = getTopN(movielist,ratedMovieList)
       
     else:
         message = 'no userId submitted'
     return HttpResponse(message)
-
-
-#userID = 'cevia' #通过这个userid（这个userid可以从douban影评csv里面任意取一个模拟）最终通过得到getTopN得到topN的电影ID
-
-
-douban_comments = pandas.read_csv('/Users/huangzeqian/Downloads/douban_yingping.csv')
-douban_comments.duplicated()
-comments = douban_comments.iloc[:,[8,9,10]]
-
-ratedList = comments[comments['userId'] == userID].values
-ratedMovieList = []
-for i in range(0,ratedList.shape[0]):
-	ratedMovieList.append(ratedList[i][1])
-
-comments = comments.values
-
-ratings = []
-movieids = []
-userIds = []
-
 
 def SVDFun(data,userSet, movieSet, userID):
 	# Evaluate performances of our algorithm on the dataset.
@@ -70,12 +52,6 @@ def SVDFun(data,userSet, movieSet, userID):
 		movielist[movie] = est
 	return movielist
 
-def average(seq, total=0.0): 
-  num = 0 
-  for item in seq: 
-    total += item 
-    num += 1 
-  return total / num
 
 def getTopN(movielist,ratedMovieList):
 
@@ -91,39 +67,62 @@ def getTopN(movielist,ratedMovieList):
 	top_n = []
 	for n in top[0:10]:
 		top_n.append(n)
-	return top_n
+	return top_n	
 
+def prepareJob(userID):
 
-for i in range(0,comments.shape[0]):
-	rating = comments[i][0]
-	movieid = comments[i][1]
-	userId = comments[i][2]
-	try:
-		rating = int(rating)
-		movieid = int(movieid)
-		ratings.append(rating)
-		movieids.append(movieid)
-		userIds.append(userId)
-	except:
-		print('str cannot convert to int')
+	douban_comments = pandas.read_csv('/Users/huangzeqian/Downloads/douban_yingping.csv')
+	douban_comments.duplicated()
+	comments = douban_comments.iloc[:,[8,9,10]]
 
-ratings_dict = {'itemID': movieids,
-                'userID': userIds,
-                'rating': ratings}
+	ratedList = comments[comments['userId'] == userID].values
+	ratedMovieList = []
+	for i in range(0,ratedList.shape[0]):
+		ratedMovieList.append(ratedList[i][1])
 
-df = pandas.DataFrame(ratings_dict)
-# A reader is still needed but only the rating_scale param is requiered.
-reader = Reader(rating_scale=(1, 5))
+	comments = comments.values
 
-# The columns must correspond to user id, item id and ratings (in that order).
-data = Dataset.load_from_df(df[['userID', 'itemID', 'rating']], reader)
+	ratings = []
+	movieids = []
+	userIds = []
 
-# We can now use this dataset as we please, e.g. calling cross_validate
-data.split(2)
+	for i in range(0,comments.shape[0]):
+		rating = comments[i][0]
+		movieid = comments[i][1]
+		userId = comments[i][2]
+		try:
+			rating = int(rating)
+			movieid = int(movieid)
+			ratings.append(rating)
+			movieids.append(movieid)
+			userIds.append(userId)
+		except:
+			print('str cannot convert to int')
 
-userSet = set(userIds)
-movieSet = set(movieids)
+	ratings_dict = {'itemID': movieids,
+	                'userID': userIds,
+	                'rating': ratings}
 
-movielist = SVDFun(data,userSet,movieSet,userID)
+	df = pandas.DataFrame(ratings_dict)
+	# A reader is still needed but only the rating_scale param is requiered.
+	reader = Reader(rating_scale=(1, 5))
 
-# print (getTopN(movielist,ratedMovieList))# 这里运行getTopN()
+	# The columns must correspond to user id, item id and ratings (in that order).
+	data = Dataset.load_from_df(df[['userID', 'itemID', 'rating']], reader)
+
+	# We can now use this dataset as we please, e.g. calling cross_validate
+	data.split(2)
+
+	userSet = set(userIds)
+	movieSet = set(movieids)
+
+	movielist = SVDFun(data,userSet,movieSet,userID)
+
+	return getTopN(movielist,ratedMovieList)# 这里运行getTopN()
+
+def average(seq, total=0.0): 
+  num = 0 
+  for item in seq: 
+    total += item 
+    num += 1 
+  return total / num
