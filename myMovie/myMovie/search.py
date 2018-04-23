@@ -27,10 +27,21 @@ def search(request):
     	message = 'the userId: ' + request.GET['userId']
 
     	context = {}
-    	context['recomdMoive'] = prepareJob(userID)
+    	# get list of movie id 
+    	context['recomdMovieId'] = prepareJob(userID)
     	context['userId'] = request.GET['userId']
+    	
+    	recomMovList = prepareJob(userID)
+    	# recomdMovieLks = ""
+    	recomdMovieLks = []
+    	for i in range(len(recomMovList)):
+
+    		recomdMovieLks.append("https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/")
+    		# recomdMovieLks = recomdMovieLks + "https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/" + "\n"
+    	
+    	context['recomdMovieLk'] = recomdMovieLks
+
     	return render(request, 'search_form.html', context)
-        #context['recomdMoive'] = getTopN(movielist,ratedMovieList)
       
     else:
         message = 'no userId submitted'
@@ -70,7 +81,6 @@ def getTopN(movielist,ratedMovieList):
 	return top_n	
 
 def prepareJob(userID):
-
 	douban_comments = pandas.read_csv('/Users/huangzeqian/Downloads/douban_yingping.csv')
 	douban_comments.duplicated()
 	comments = douban_comments.iloc[:,[8,9,10]]
