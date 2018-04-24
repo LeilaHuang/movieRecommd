@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from . import view, search, recommendations
+from . import view, search
 
  
 urlpatterns = [
