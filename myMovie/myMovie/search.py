@@ -13,6 +13,9 @@ from surprise.model_selection import train_test_split
 from surprise.dump import dump
 from sklearn.externals import joblib
 from surprise import*
+import requests
+from bs4 import BeautifulSoup
+import json
 
  
 # 表单
@@ -43,8 +46,8 @@ def search(request):
     	# recomdMovieLks = ""
     	recomdMovieLks = []
     	for i in range(len(recomMovList)):
-    		recomdMovieLks.append("https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/")
-    		# recomdMovieLks.append(getMovieInfo(recomMovList[i]))
+    		# recomdMovieLks.append("https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/")
+    		recomdMovieLks.append(getMovieInfo(recomMovList[i]))
     		# recomdMovieLks = recomdMovieLks + "https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/" + "\n"
     	
     	context['recomdMovieLk'] = recomdMovieLks
@@ -66,7 +69,7 @@ def SVDFun(data,userSet, movieSet, userID):
 	# algo.fit(trainset)
 	# predictions = algo.test(testset)
 
-	# algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
+	#algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
 
 	algo = joblib.load("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/svdmodel.pkl") 
 
@@ -97,7 +100,7 @@ def getTopN(movielist,ratedMovieList):
 
 def prepareJob(userID):
 # <<<<<<< HEAD
-# 	douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
+	#douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
 # =======
 
 	douban_comments = pandas.read_csv("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/douban_yingping.csv")
@@ -157,25 +160,20 @@ def average(seq, total=0.0):
     num += 1 
   return total / num
 
-# def getMovieInfo(movieid):
-	# header = {
-	# 		'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
-	# 		}
-	# page = requests.get(url)
-	# soup = BeautifulSoup(page.text,"lxml")
-	# #content > h1 > span:nth-child(1)
-	# title = soup.select('#content > h1')[0].get_text()
-	# #mainpic > a > img
-	# img = soup.select('#mainpic > a > img')[0].get("src")
-	# data = {
-	# 	'title': title,
-	# 	'img':img
-	# }
-	# douban_db_table.insert_one(data)
-	# douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
-	# douban_comments.duplicated()
-	# comments = douban_comments.iloc[:,[0,9]]
-	# movieTitle = comments[comments['movieId'] == movieid].values
-	# return movieTitle[0][0]
+def getMovieInfo(movieid):
+	url = 'http://api.shenjian.io/?appid=37efb15d1992e8638f39873b65886e4d&movieid='+ str(movieid)
+	page = requests.get(url)
+	data = page.text
+	json_data = json.loads(data)
+	name = json_data['data']['name']
+	cover = json_data['data']['cover']
+	movieType = json_data['data']['type']
+	data = {
+		'name' : name,
+		'cover' : cover,
+		'movieType' : movieType,
+		'id' : movieid
+	}
+	return data
 
 

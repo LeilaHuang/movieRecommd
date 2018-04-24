@@ -31,13 +31,13 @@
           <div class="col-sm-11" >      
           </br>
           <a style="float: left;" href="./profile.html" class="btn btn-primary" > Profile </a>
-          {% for movieid in recomdMovieId %}
+          {% for movie in recomdMovieLk %}
           <div class="col-sm-3 card movieDetail">
-            <img class="card-img-top cardImage" src= "/image/movie1.png" alt="Card image">
+            <img class="card-img-top cardImage" src= "{{movie.cover}}" alt="Card image">
             <div class="card-body">
-              <h4 class="card-title">{{movieid}}</h4> </br>
+              <h4 class="card-title">{{movie.name}}</h4> </br>
              <!--  <p class="card-text" align="left">The film begins with a feather falling to the feet of Forrest Gump who is sitting at a bus stop in Savannah, Georgia. Forrest picks up the feather and puts it in the book Curious George, then tells the story of his life to a woman seated next to him. The listeners at the bus stop change regularly throughout his narration, each showing a different attitude ranging from disbelief and indifference to rapt veneration.</p> -->
-              <a href="https://movie.douban.com/subject/{{movieid}}" class="btn btn-primary">See Detail</a>
+              <a href="https://movie.douban.com/subject/{{movie.id}}" class="btn btn-primary">See Detail</a>
             </div>
           </div>
           {% endfor %}
