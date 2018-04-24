@@ -8,7 +8,7 @@ from surprise import*
 userID = 'cevia' #通过这个userid（这个userid可以从douban影评csv里面任意取一个模拟）最终通过得到getTopN得到topN的电影ID
 
 
-douban_comments = pandas.read_csv('/Users/huangzeqian/Downloads/douban_yingping.csv')
+douban_comments = pandas.read_csv('douban_yingping.csv')
 douban_comments.duplicated()
 comments = douban_comments.iloc[:,[8,9,10]]
 

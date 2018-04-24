@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from . import view, search, recommendations
-
+from . import search,view
  
 urlpatterns = [
     url(r'^hello/', view.hello, name = 'hello'),

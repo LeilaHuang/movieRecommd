@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link href="css/global.css" type="text/css" rel="stylesheet">
+	<link href="/../static/style/global.css" type="text/css" rel="stylesheet">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script scr="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
 </head>
@@ -14,11 +14,15 @@
   <div class="bg container-fluid text-center">
     <h1 style="color: #fff;">MovieLike</h1>
     </br>
-   
+   <h4 style="color: #fff;">{{userId}}</h4>
     <h4 style="color: #fff;">Are you ready? Please connect the sensor. :) </h4>
 
     <button type="button" class="btn btn-primary" > Yes </button>
-
+    <!-- <ul>
+{% for athlete in athlete_list %}
+    <li>{{ athlete.name }}</li>
+{% endfor %}
+</ul> -->
     
     <div class="container-fluid">
         <div class="row">
@@ -27,44 +31,16 @@
           <div class="col-sm-11" >      
           </br>
           <a style="float: left;" href="./profile.html" class="btn btn-primary" > Profile </a>
-
-          <div class="col-sm-3 card movieDetail" >
-            <img class="card-img-top cardImage" src="images/movie1.png" alt="Card image">
+          {% for movieid in recomdMovieId %}
+          <div class="col-sm-3 card movieDetail">
+            <img class="card-img-top cardImage" src= "/image/movie1.png" alt="Card image">
             <div class="card-body">
-              <h4 class="card-title">Forrest Gump</h4> </br>
+              <h4 class="card-title">{{movieid}}</h4> </br>
              <!--  <p class="card-text" align="left">The film begins with a feather falling to the feet of Forrest Gump who is sitting at a bus stop in Savannah, Georgia. Forrest picks up the feather and puts it in the book Curious George, then tells the story of his life to a woman seated next to him. The listeners at the bus stop change regularly throughout his narration, each showing a different attitude ranging from disbelief and indifference to rapt veneration.</p> -->
-              <a href="https://movie.douban.com/subject/1292720/" class="btn btn-primary">See Detail</a>
+              <a href="https://movie.douban.com/subject/{{movieid}}" class="btn btn-primary">See Detail</a>
             </div>
           </div>
-
-          <div class="col-sm-3 card movieDetail" >
-            <img class="card-img-top cardImage" src="images/movie2.png" alt="Card image">
-            <div class="card-body">
-              <h4 class="card-title">Kung Fu Panda 3</h4> </br>
-              <!-- <p class="card-text" align="left">Living large and loving life, Po (Jack Black) realizes that he has a lot to learn if he's going to fulfill the next challenge from his beloved instructor (Dustin Hoffman). After reuniting with his long-lost father (Bryan Cranston), Po must transition from student to teacher and train a group of fun-loving, clumsy pandas to become martial-arts fighters. Together, the kung-fu brethren unite to take on the evil Kai (J.K. Simmons), a supernatural warrior who becomes stronger with each battle.</p> -->
-              <a href="https://movie.douban.com/subject/11589036/" class="btn btn-primary">See Detail</a>
-            </div>
-          </div>
-
-          <div class="col-sm-3 card movieDetail" >
-            <img class="card-img-top cardImage" src="images/movie3.png" alt="Card image">
-            <div class="card-body">
-              <h4 class="card-title">Sherlock</h4> </br>
-             <!--  <p class="card-text" align="left">Wounded Afghan veteran Dr. John Watson (Martin Freeman) meets brilliant consulting detective Sherlock Holmes (Benedict Cumberbatch) and moves into a flat on 221B Baker Street with him. Their landlady, Mrs. Hudson (Una Stubbs), acts as a de facto housekeeper for them. Sherlock's first case, "A Study in Pink", sees him apprehend cabbi-turned-serial killer Jeff Hope (Phil Davis). Their confrontation escalates to the point that John, who's followed Sherlock unnoticed to the scene, shoots the cabbie out of fear for Sherlock's life. However, Sherlock manages to extract from the dying cabbie that he was being sponsored in his crimes by a figure called Moriarty, who is apparently a "fan" of Sherlock's.</p> -->
-              <a href="https://movie.douban.com/subject/6522269/" class="btn btn-primary">See Detail</a>
-            </div>
-          </div>
-
-          <div class="col-sm-3 card movieDetail" >
-            <img class="card-img-top cardImage" src="images/movie4.png" alt="Card image">
-            <div class="card-body">
-              <h4 class="card-title">The Shawshank Redemption</h4>
-           
-             <!--  <p class="card-text" align="left">Andy Dufresne (Tim Robbins) is sentenced to two consecutive life terms in prison for the murders of his wife and her lover and is sentenced to a tough prison. However, only Andy knows he didn't commit the crimes. While there, he forms a friendship with Red (Morgan Freeman), experiences brutality of prison life, adapts, helps the warden, etc., all in 19 years.</p> -->
-              <a href="https://movie.douban.com/subject/1292052/" class="btn btn-primary">See Detail</a>
-            </div>
-          </div>
-
+          {% endfor %}
           </div>
 
           <!-- <div class="col-sm-1"></div> -->

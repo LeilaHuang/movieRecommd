@@ -3,11 +3,17 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import render
+
 import pandas
 from surprise import NormalPredictor
 from surprise import Dataset
 from surprise import Reader
+from surprise.model_selection import cross_validate
+from surprise.model_selection import train_test_split
+from surprise.dump import dump
+from sklearn.externals import joblib
 from surprise import*
+
 
  
 # 表单
@@ -18,7 +24,6 @@ def search_form(request):
 # 接收请求数据
 
 
-userID = 'cevia'
 
 def search(request):  
     request.encoding='utf-8'
@@ -26,22 +31,23 @@ def search(request):
     	userID = request.GET['userId']
     	message = 'the userId: ' + request.GET['userId']
 
+    	userID = 'cevia'
     	context = {}
-    	# get list of movie id 
-    	context['recomdMovieId'] = prepareJob(userID)
-    	context['userId'] = request.GET['userId']
-    	
     	recomMovList = prepareJob(userID)
+    	# get list of movie id 
+    	context['userId'] = userID
+    	context['recomdMovieId'] = recomMovList
+    	# context['userId'] = request.GET['userId']	
     	# recomdMovieLks = ""
     	recomdMovieLks = []
     	for i in range(len(recomMovList)):
-
     		recomdMovieLks.append("https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/")
+    		# recomdMovieLks.append(getMovieInfo(recomMovList[i]))
     		# recomdMovieLks = recomdMovieLks + "https://movie.douban.com/subject/"+ str(recomMovList[i]) +"/" + "\n"
     	
     	context['recomdMovieLk'] = recomdMovieLks
 
-    	return render(request, 'search_form.html', context)
+    	return render(request, 'home.html', context)
       
     else:
         message = 'no userId submitted'
@@ -49,12 +55,13 @@ def search(request):
 
 def SVDFun(data,userSet, movieSet, userID):
 	# Evaluate performances of our algorithm on the dataset.
-#	itemList = [[0] * userNumber] * itemNumber
-#	userList = [[0] * itemNumber] * userNumber
 	algo = SVD()
 	# perf = evaluate(algo, data, measures=['RMSE', 'MAE'])
-	trainset = data.build_full_trainset()
-	algo.fit(trainset)
+	# trainset = data.build_full_trainset()
+	trainset, testset = train_test_split(data, test_size=.25)
+	# algo.fit(trainset)
+	# predictions = algo.test(testset)
+	algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
 	# meanRMSE = average(perf['RMSE'])
 	# meanMAE = average(perf['MAE'])
 	movielist = dict()
@@ -81,7 +88,7 @@ def getTopN(movielist,ratedMovieList):
 	return top_n	
 
 def prepareJob(userID):
-	douban_comments = pandas.read_csv('/Users/huangzeqian/Downloads/douban_yingping.csv')
+	douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
 	douban_comments.duplicated()
 	comments = douban_comments.iloc[:,[8,9,10]]
 
@@ -136,3 +143,26 @@ def average(seq, total=0.0):
     total += item 
     num += 1 
   return total / num
+
+# def getMovieInfo(movieid):
+	# header = {
+	# 		'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+	# 		}
+	# page = requests.get(url)
+	# soup = BeautifulSoup(page.text,"lxml")
+	# #content > h1 > span:nth-child(1)
+	# title = soup.select('#content > h1')[0].get_text()
+	# #mainpic > a > img
+	# img = soup.select('#mainpic > a > img')[0].get("src")
+	# data = {
+	# 	'title': title,
+	# 	'img':img
+	# }
+	# douban_db_table.insert_one(data)
+	# douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
+	# douban_comments.duplicated()
+	# comments = douban_comments.iloc[:,[0,9]]
+	# movieTitle = comments[comments['movieId'] == movieid].values
+	# return movieTitle[0][0]
+
+
