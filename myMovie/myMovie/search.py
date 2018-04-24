@@ -28,15 +28,17 @@ def login(request):
     return render_to_response('login.html') 
 
 def profile(request):
-	request.encoding='utf-8'
-	if 'userId' in request.GET:
-		userID = request.GET['userId']
-		context = {}
-		context['userId'] = userID
-		return render(request, 'profile.html', context) 
-	else:
-		message = 'no userId submitted'
-	return HttpResponse(message)
+	return render(request, 'profile.html') 
+	# request.encoding='utf-8'
+	# if 'userId' in request.GET:
+	# 	userID = request.GET['userId']
+	# 	context = {}
+	# 	context['userId'] = userID
+	# 	return render(request, 'profile.html', context) 
+	# else:
+	# 	message = 'no userId submitted'
+	# return HttpResponse(message)
+
 # 接收请求数据
 def home(request):  
 	request.encoding='utf-8'
@@ -63,6 +65,7 @@ def home(request):
       
 	else:
 		message = 'no userId submitted'
+
 	return HttpResponse(message)
 
 #  userID = 'cevia' #通过这个userid（这个userid可以从douban影评csv里面任意取一个模拟）最终通过得到getTopN得到topN的电影ID
