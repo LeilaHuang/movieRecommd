@@ -13,11 +13,7 @@ from surprise.model_selection import train_test_split
 from surprise.dump import dump
 from sklearn.externals import joblib
 from surprise import*
-<<<<<<< HEAD
 
-
-=======
->>>>>>> origin/master
  
 # 表单
 def search_form(request):
@@ -66,11 +62,11 @@ def SVDFun(data,userSet, movieSet, userID):
 	trainset, testset = train_test_split(data, test_size=.25)
 	# algo.fit(trainset)
 	# predictions = algo.test(testset)
-<<<<<<< HEAD
-	algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
-=======
+
+	# algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
+
 	algo = joblib.load("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/svdmodel.pkl") 
->>>>>>> origin/master
+
 	# meanRMSE = average(perf['RMSE'])
 	# meanMAE = average(perf['MAE'])
 	movielist = dict()
@@ -97,12 +93,11 @@ def getTopN(movielist,ratedMovieList):
 	return top_n	
 
 def prepareJob(userID):
-<<<<<<< HEAD
-	douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
-=======
+# <<<<<<< HEAD
+# 	douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
+# =======
 
 	douban_comments = pandas.read_csv("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/douban_yingping.csv")
->>>>>>> origin/master
 	douban_comments.duplicated()
 	comments = douban_comments.iloc[:,[8,9,10]]
 
