@@ -11,10 +11,14 @@
 </head>
 
 <body>
-  <div class="bg container-fluid text-center">
+  <div class="bg container-fluid text-center"  >
     <h1 style="color: #fff;">MovieLike</h1>
-    </br>
-    <h3 style="color: #fff;">{{userId}}</h3>
+    </br>   
+    <form action="/profile" method="get">
+      <h3 style="color: #fff;">{{userId}}</h3>
+      <button style="float: left;"  class="btn btn-primary" type="submit">Profile</button>
+    </form>
+    <!-- <button style="float: left;"  class="btn btn-primary" > Profile</button> -->
     <!-- <h4 style="color: #fff;">Are you ready? Please connect the sensor. :) </h4> -->
 
     <!-- <button type="button" class="btn btn-primary" > Yes </button> -->
@@ -30,7 +34,6 @@
 
           <div class="col-sm-11" >      
           </br>
-          <a style="float: left;" href="./profile.html" class="btn btn-primary" > Profile </a>
           {% for movie in recomdMovieLk %}
           <div class="col-sm-3 card movieDetail">
             <img class="card-img-top cardImage" src= "{{movie.cover}}" alt="Card image">
@@ -52,8 +55,5 @@
 
 </body>
 
-<script type="text/javascript">
-	
-</script>
 
 </html>
