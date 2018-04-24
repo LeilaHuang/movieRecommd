@@ -123,6 +123,7 @@ USE_TZ = True
 # # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 HERE = os.path.dirname(os.path.abspath(__file__))
 HERE = os.path.join(HERE, '../')
 STATICFILES_DIRS = (
@@ -131,3 +132,13 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(HERE, 'static/'),
 )
+=======
+STATIC_ROOT = os.path.join(os.path.dirname(__file__),'static')
+STATICFILES_DIRS = (
+    ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/') ),  
+    ('js',os.path.join(STATIC_ROOT,'js').replace('\\','/') ),
+    ('images',os.path.join(STATIC_ROOT,'images').replace('\\','/') ),
+    ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/') ),
+)
+
+>>>>>>> origin/master
