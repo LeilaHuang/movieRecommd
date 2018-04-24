@@ -19,7 +19,10 @@ from surprise import*
 def search_form(request):
 
     return render_to_response('search_form.html')
- 
+
+def login(request):
+
+    return render_to_response('login.html') 
 # 接收请求数据
 
 
