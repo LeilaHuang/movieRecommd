@@ -81,7 +81,7 @@ def SVDFun(data,userSet, movieSet, userID):
 
 	#algo = joblib.load('/Users/esthertang/Desktop/movieRecommd/myMovie/static/svdmodel.pkl') 
 
-	algo = joblib.load("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/svdmodel.pkl") 
+	#algo = joblib.load("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/svdmodel.pkl") 
 
 	# meanRMSE = average(perf['RMSE'])
 	# meanMAE = average(perf['MAE'])
@@ -113,7 +113,7 @@ def prepareJob(userID):
 	#douban_comments = pandas.read_csv('/Users/esthertang/Desktop/movieRecommd/myMovie/static/douban_yingping.csv')
 # =======
 
-	douban_comments = pandas.read_csv("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/douban_yingping.csv")
+	#douban_comments = pandas.read_csv("/Users/huangzeqian/Documents/movieRecommd/myMovie/static/douban_yingping.csv")
 	douban_comments.duplicated()
 	comments = douban_comments.iloc[:,[8,9,10]]
 
